@@ -109,4 +109,3 @@ function attemptDetection(imageData: string, config: any): Promise<DetectionResu
     );
   });
 }
-
