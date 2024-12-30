@@ -118,3 +118,95 @@ NutriScan follows a modern, serverless architecture leveraging the power of Next
 
 ## Project Structure
 
+NutriScan's project structure is organized for scalability and maintainability. Below is an overview:
+
+### **`app/`**
+Contains all pages and layouts structured with Next.js App Router.
+- **`app/api/`**: Backend API routes for authentication, food logging, and nutrient tracking.
+- **`app/scan/`**: Barcode scanning page integrating the scanner functionality.
+
+### **`components/`**
+Reusable UI components.
+- **`Navbar.tsx`**: Top navigation bar.
+- **`Footer.tsx`**: Application footer.
+- **`Graph.tsx`**: Nutritional data visualization.
+
+### **`lib/`**
+Helper libraries and utilities.
+- **`dbConnect.ts`**: MongoDB connection utility.
+
+### **`models/`**
+Database schema definitions.
+- **`User.ts`**: User schema including `foodList`, `dailyIntake`, and preferences.
+- **`FoodItem.ts`**: Schema for individual food items.
+
+### **`services/`**
+Abstractions for external API integrations.
+- **`foodService.ts`**: OpenFoodFacts API integration.
+
+### **`utils/`**
+Utility functions for data processing and transformations.
+- **`barcodeDetector.ts`**: Handles barcode detection logic.
+
+### **`styles/`**
+Global CSS and Tailwind configurations.
+
+## Barcode Scanning
+
+### **Implementation Details**
+The barcode scanning feature in NutriScan is designed for efficiency and accuracy:
+
+1. **Technology**:
+   - Uses `@ericblade/quagga2` for browser-based barcode detection.
+   - Integrated with `react-webcam` for real-time camera feed.
+
+2. **Core Functionality**:
+   - **Real-Time Scanning**: Processes frames from the camera to detect barcodes.
+   - **Fallback Options**: Allows image upload and manual barcode entry for accessibility.
+   - **Supported Formats**: Recognizes EAN, UPC, and CODE 128 barcode formats.
+
+3. **Error Handling**:
+   - Debounced scanning to prevent repeated detection failures.
+   - Real-time feedback for undetectable or invalid barcodes.
+
+4. **Integration with OpenFoodFacts**:
+   - Queries the database for product details based on barcode value.
+   - Caches results in MongoDB to minimize redundant API calls.
+
+5. **Optimization**:
+   - Image preprocessing (contrast, brightness adjustments).
+   - Multiple detection passes for enhanced reliability.
+
+## Database Schema
+
+### **Schema Structure**
+The MongoDB database structure ensures efficient data organization:
+
+1. **User Schema**:
+   - `email`: User's email address (unique).
+   - `password`: Hashed password.
+   - `foodList`: Array of food items logged by the user.
+   - `dailyIntake`: Nested schema containing daily logs.
+
+2. **FoodItem Schema**:
+   - `name`: Name of the food item.
+   - `brand`: Brand name.
+   - `barcode`: Barcode number for identification.
+   - `nutritionalInfo`: Object containing calories, protein, carbs, and fats.
+
+3. **Caching**:
+   - Cached product details from OpenFoodFacts.
+   - Reduces redundant external API calls for improved performance.
+
+## Deployment
+
+NutriScan is deployed on platforms supporting Next.js, such as Vercel or AWS Amplify. Deployment steps include:
+
+1. Build the application using `next build`.
+2. Configure environment variables.
+3. Deploy to the desired platform.
+
+## Conclusion
+
+NutriScan offers a robust and user-friendly platform for managing dietary habits. With its comprehensive features, advanced barcode scanning capabilities, and efficient database architecture, it provides an invaluable tool for health-conscious users.
+
