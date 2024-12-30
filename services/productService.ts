@@ -37,4 +37,3 @@ export async function getProductDetails(barcode: string): Promise<ProductDetails
     throw new Error('An unexpected error occurred');
   }
 }
-
